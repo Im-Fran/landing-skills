@@ -25,7 +25,10 @@ specific to the client. The evidence is in `references/visual-tells.md`.
 ## Inputs
 
 1. `landing/brief.md`: the product, audience, conversion action, assets,
-   brand constraints, language and stack.
+   brand constraints, language, stack, and `Wanted moments` (the motion, 3D
+   or scroll effects the user asked for). The direction gives each wanted
+   moment its role, purpose and reduced-motion form in the
+   `Motion and 3D intent` section (step 8).
 2. `landing/copy.md`: the approved copy, one H2 per section in page order,
    ending with `Placeholders`. The section list is your layout's skeleton and
    the words set the tone.
@@ -40,8 +43,10 @@ brief and mark what depends on the copy as provisional.
 Do the steps in order. Steps 1 to 3 produce writing, not values.
 
 Reading order is a rule. Write the `Subject` and `Direction` sections before
-you open any file in `references/` except `references/visual-tells.md`,
-which you read at step 2 for the default test. Then open each reference only
+you open any file in `references/`, with two exceptions:
+`references/inputs.md`, which you read at the start when an input is
+missing, and `references/visual-tells.md`, which you read at step 2 for the
+default test. Then open each reference only
 at the step that uses it. The reason: a table read before the direction
 exists becomes the answer, and readers who read the tables first pick the
 same faces and palettes for unrelated clients.
@@ -132,7 +137,9 @@ words only as a check on the result.
    sources, pick, record two rejected candidates, and run its convergence
    check. Its "First-reach faces" section lists the faces readers reach for
    first.
-4. Size the hero for its real headline; the same file has the numbers.
+4. Choose a metric-close fallback for each font stack, by the method in
+   the same file ("Font loading notes"), and record why.
+5. Size the hero for its real headline; the same file has the numbers.
 
 ### 5. Colour
 
@@ -174,8 +181,8 @@ to one thing), and its reduced-motion version. A 3D scene also needs a still
 poster image.
 
 Keep to one signature moment by default. More is justified when each
-explains a different thing a still image cannot show. When the brief asks
-for several moments, the brief wins: name each, give each its purpose and
+explains a different thing a still image cannot show. When the brief's
+`Wanted moments` asks for several, the brief wins: name each, give each its purpose and
 reduced-motion form, and place them so no two share a screen.
 `landing-skills:landing-motion` implements exactly what you write here.
 

@@ -76,7 +76,8 @@ syntax, and tints from `color-mix()`. Both belong in the build CSS behind
 ```
 
 When the state matters for contrast (a pressed button with text on it),
-write it as its own token and check its ratio, as `references/example.md` does with `--color-action-hover`.
+write it as its own token, such as `--color-action-hover`, and check its
+ratio.
 
 ### The ink and the ground are derived too
 
