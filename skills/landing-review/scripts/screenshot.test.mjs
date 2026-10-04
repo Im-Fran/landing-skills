@@ -1,9 +1,9 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtempSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, writeFileSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { WIDTHS, toUrl, buildArgs } from './screenshot.mjs';
+import { WIDTHS, toUrl, buildArgs, npxCommand } from './screenshot.mjs';
 
 test('widths are the four review breakpoints', () => {
   assert.deepEqual(WIDTHS, [360, 768, 1280, 1440]);
@@ -39,4 +39,27 @@ test('buildArgs sets viewport, full page, and output', () => {
 test('buildArgs adds the dark colour scheme', () => {
   const args = buildArgs('https://example.com', 'out/360-dark.png', 360, { dark: true });
   assert.deepEqual(args.slice(3, 5), ['--color-scheme', 'dark']);
+});
+
+test('npxCommand on non-Windows returns npx with no prefix args', () => {
+  const result = npxCommand('darwin', '/usr/local/bin/node', () => false);
+  assert.deepEqual(result, { command: 'npx', prefixArgs: [] });
+});
+
+test('npxCommand on Windows with existing npx-cli.js returns node with cli prefix', () => {
+  const execPath = join('C:', 'Program Files', 'nodejs', 'node.exe');
+  const result = npxCommand('win32', execPath, () => true);
+  assert.equal(result.command, execPath);
+  assert.equal(result.prefixArgs.length, 1);
+  assert.ok(result.prefixArgs[0].endsWith('npx-cli.js'));
+});
+
+test('npxCommand on Windows without npx-cli.js throws helpful error', () => {
+  const execPath = join('C:', 'Program Files', 'nodejs', 'node.exe');
+  assert.throws(() => npxCommand('win32', execPath, () => false), /Cannot find npx-cli\.js/);
+});
+
+test('screenshot.mjs does not contain shell option', () => {
+  const code = readFileSync(new URL('./screenshot.mjs', import.meta.url), 'utf-8');
+  assert.ok(!code.includes('shell:'), 'shell option must not appear in screenshot.mjs');
 });

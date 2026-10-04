@@ -3,7 +3,7 @@
 // It does not emulate reduced motion: the Playwright CLI has no flag for it.
 import { spawnSync } from 'node:child_process';
 import { existsSync, mkdirSync } from 'node:fs';
-import { join, resolve } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 export const WIDTHS = [360, 768, 1280, 1440];
@@ -24,6 +24,19 @@ export function buildArgs(url, outFile, width, { dark = false } = {}) {
   ];
 }
 
+// Node refuses to spawn npx.cmd without a shell, and a shell would interpret
+// characters in the URL. Instead, on Windows use node to run npx-cli.js directly.
+export function npxCommand(platform = process.platform, execPath = process.execPath, exists = existsSync) {
+  if (platform !== 'win32') {
+    return { command: 'npx', prefixArgs: [] };
+  }
+  const cli = join(dirname(execPath), 'node_modules', 'npm', 'bin', 'npx-cli.js');
+  if (!exists(cli)) {
+    throw new Error('Cannot find npx-cli.js next to node.exe. Run the capture by hand: npx playwright screenshot --full-page <url> <file>');
+  }
+  return { command: execPath, prefixArgs: [cli] };
+}
+
 function main() {
   const args = process.argv.slice(2);
   const dark = args.includes('--dark');
@@ -39,13 +52,21 @@ function main() {
     console.error(err.message);
     process.exit(2);
   }
+
+  let command, prefixArgs;
+  try {
+    ({ command, prefixArgs } = npxCommand());
+  } catch (err) {
+    console.error(err.message);
+    process.exit(2);
+  }
+
   mkdirSync(outDir, { recursive: true });
   let failed = false;
   for (const width of WIDTHS) {
     const outFile = join(outDir, `${width}${dark ? '-dark' : ''}.png`);
-    const run = spawnSync('npx', buildArgs(url, outFile, width, { dark }), {
+    const run = spawnSync(command, [...prefixArgs, ...buildArgs(url, outFile, width, { dark })], {
       stdio: 'inherit',
-      shell: process.platform === 'win32',
     });
     if (run.status !== 0) {
       failed = true;
