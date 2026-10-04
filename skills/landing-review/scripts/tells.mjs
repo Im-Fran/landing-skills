@@ -1,0 +1,157 @@
+// Source-detectable tells. Heuristics: a finding is a prompt to look, not a verdict.
+// Each pattern is tested against one line at a time. Do not use the g flag.
+export const TELLS = [
+  {
+    id: 'palette-cream-terracotta',
+    pattern: /#(?:F4F1EA|D97757)\b/i,
+    message: 'Cream and terracotta palette that generated pages default to.',
+    fix: 'Derive the palette from the client subject. See landing-art-direction references/colour.md.',
+  },
+  {
+    id: 'default-shadow',
+    pattern: /rgba\(\s*0\s*,\s*0\s*,\s*0\s*,\s*0?\.1\s*\)/,
+    message: 'Default black shadow at 10 percent opacity.',
+    fix: 'Tint the shadow with the page ink colour, or drop it and use a border or spacing.',
+  },
+  {
+    id: 'overused-font',
+    // Leading family only, whole name only (Roboto Mono, Inter Tight are not matched). Tier A from research 03,
+    // minus Arial/Helvetica (deliberate system stacks; the tell is "sole face", which one line cannot show),
+    // minus Tier B (Poppins, Montserrat, Lato).
+    pattern: /font-family\s*:\s*['"]?(?:Inter|Roboto|Open Sans|Space Grotesk|Geist|Instrument Serif)['"]?\s*(?:[,;!}]|$)|family=(?:Inter|Roboto|Open\+Sans|Space\+Grotesk|Geist|Instrument\+Serif)(?=[:&"'\s]|$)/i,
+    message: 'Leading typeface is one generated pages often default to. A prompt to check it was chosen for a reason, not a verdict.',
+    fix: 'If no reason is recorded, pick a pairing by tone from landing-art-direction references/typography.md.',
+  },
+  {
+    id: 'gradient-text',
+    pattern: /background-clip\s*:\s*text|\bbg-clip-text\b/,
+    message: 'Gradient-filled text.',
+    fix: 'Set the headline in a solid ink colour and let size, weight, and the typeface carry it.',
+  },
+  {
+    id: 'purple-blue-gradient',
+    pattern: /\bfrom-(?:purple|indigo|violet)-\d+\b.{0,800}\bto-(?:blue|pink|cyan|purple)-\d+\b/,
+    message: 'Purple-to-blue gradient.',
+    fix: 'Use a flat colour from the palette, or a gradient between two palette neighbours.',
+  },
+  {
+    id: 'fade-up-everywhere',
+    pattern: /data-aos=["']fade-up["']/,
+    message: 'Fade-up reveal applied per section.',
+    fix: 'Keep one orchestrated moment. See landing-motion references/foundations.md.',
+  },
+  {
+    id: 'hover-scale',
+    pattern: /\bhover:scale-1(?:05|10)\b|:hover[^{]{0,800}\{[^}]{0,800}scale\(1\.(?:05|1)\)/,
+    message: 'Card or button that grows on hover.',
+    fix: 'Respond with a change that carries meaning: colour, underline, or a press state on active.',
+  },
+  {
+    id: 'glass-card',
+    pattern: /\bbackdrop-blur(?:-\w+)?\b.{0,800}\bbg-white\/(?:5|10|20)\b|\bbg-white\/(?:5|10|20)\b.{0,800}\bbackdrop-blur/,
+    message: 'Glassmorphism card.',
+    fix: 'Use an opaque surface from the palette unless real content sits behind it.',
+  },
+  {
+    id: 'arrow-in-button',
+    pattern: /<(?:button|a)\b[^>]{0,600}>[^<]{0,600}(?:→|&rarr;)\s*<\/(?:button|a)>/,
+    message: 'Arrow glyph at the end of a button label.',
+    fix: 'Let the label say what happens. Drop the arrow.',
+  },
+  {
+    id: 'pill-badge',
+    pattern: /<(?:span|div|p)\b[^>]{0,800}class=["'][^"']{0,800}(?:\brounded-full\b[^"']{0,800}\b(?:uppercase|tracking-wide|tracking-wider|tracking-widest)\b|\b(?:uppercase|tracking-wide|tracking-wider|tracking-widest)\b[^"']{0,800}\brounded-full\b)/,
+    message: 'Pill badge above the headline.',
+    fix: 'Drop the badge, or fold what it says into the headline or the first sentence.',
+  },
+  {
+    id: 'copy-inflated-en',
+    pattern: /\b(?:unlock the (?:full )?(?:power|potential)|seamless(?:ly)?|elevate your|supercharge|take your \w+ to the next level|in today's fast-paced|game[- ]chang(?:er|ing)|revolutioni[sz]e|cutting-edge|let's dive in|here's the kicker|picture this|delve into|rich tapestry|empower(?:s|ing)? (?:your|you|teams))\b/i,
+    message: 'Inflated stock phrase.',
+    fix: 'Say what the product does, for whom, with a number or a named thing. See landing-copy references/tells.md.',
+  },
+  {
+    id: 'copy-inflated-es',
+    pattern: /\b(?:desbloquea (?:el|todo el) (?:poder|potencial)|lleva tu \w+ al siguiente nivel|revoluciona tu|de forma fluida|en el mundo actual|en un mundo donde|en constante evolución|sumérgete en|embárcate en|tú decides,? nosotros)\b/i,
+    message: 'Frase hecha inflada.',
+    fix: 'Di qué hace el producto, para quién, con una cifra o un nombre concreto. Ver landing-copy references/tells.md.',
+  },
+  {
+    id: 'emoji-bullet',
+    pattern: /<(?:h[1-6]|li)\b[^>]{0,800}>\s*(?:✨|🚀|⚡|🔥|💡|🎯)/u,
+    message: 'Emoji used as an icon or bullet.',
+    fix: 'Use one coherent icon set, or no icons.',
+  },
+  {
+    id: 'reduced-motion-kill-switch',
+    pattern: /animation-duration\s*:\s*0\.01ms/,
+    message: 'Reduced motion handled by zeroing every animation.',
+    fix: 'Write a reduced variant per animation. See landing-motion references/safety.md.',
+  },
+  {
+    id: 'builder-fingerprint',
+    pattern: /\b(?:lovable\.(?:app|dev)|Edit with Lovable|Made with Bolt|bolt\.host|Built with v0|v0\.dev|base44|replit\.app|repl\.co)\b/i,
+    message: 'Site-builder badge, domain, or mark left in the source.',
+    fix: 'Remove the badge and serve the page from the client domain.',
+  },
+  {
+    id: 'placeholder-text',
+    pattern: /(?<!placeholder=["'][^"']{0,80})(?:lorem ipsum|\[(?:Your|Insert)\b|Your Company Name|as an AI (?:language )?model|<title>\s*(?:My App|Vite \+ React(?: App)?|Create Next App)\s*<\/title>)/i,
+    message: 'Placeholder text or default title left in.',
+    fix: 'Write the real copy and a title that names the product and who it is for.',
+  },
+  {
+    id: 'stock-testimonial',
+    pattern: /(?<!placeholder=["'][^"']{0,80})(?:\bSarah Johnson\b|\bJohn Smith\b|pravatar\.cc|randomuser\.me|ui-avatars\.com|dicebear\.com)/i,
+    message: 'Stock testimonial name or placeholder avatar service.',
+    fix: 'Use a real named customer with permission, or leave testimonials out.',
+  },
+  {
+    id: 'indigo-default-accent',
+    pattern: /#(?:6366F1|615FFF|8E51FF|4F39F6|7F22FE)\b|\b(?:bg|text|border|from|to|via)-indigo-(?:500|600)\b/i,
+    message: 'Tailwind indigo or violet default accent.',
+    fix: 'Derive the accent from the client subject. See landing-art-direction references/colour.md.',
+  },
+  {
+    id: 'stock-effect-component',
+    pattern: /\b(?:BorderBeam|AnimatedBeam|AnimatedShinyText|AnimatedGradientText|NumberTicker|CountUp|useCountUp)\b|react-countup|magicui\/|#ffaa40|#9c40ff|\banimate-bounce\b/i,
+    message: 'Drop-in effect component (Magic UI, count-up, bounce) with stock defaults.',
+    fix: 'Cut it, or build motion that explains the product. See landing-motion references/foundations.md.',
+  },
+  {
+    id: 'vague-attribution',
+    pattern: /\b(?:industry reports|experts (?:argue|agree)|studies show|observers have cited)\b/i,
+    message: 'Claim attributed to nobody in particular.',
+    fix: 'Name the source and link it, or give the figure you measured yourself.',
+  },
+  {
+    id: 'copy-negation-pivot',
+    pattern: /\bit'?s not (?:just |only )?[^.,<]{1,800}, it'?s\b|\bNo \w+\. No \w+\. Just\b|\bno se trata de [^,.<]{1,800}, se trata de\b/i,
+    message: 'Negation pivot ("It\'s not X, it\'s Y" / "No se trata de X, se trata de Y").',
+    fix: 'State what the thing is, directly. Say Y only.',
+  },
+  {
+    id: 'dead-form',
+    pattern: /<form\b[^>]{0,800}(?:\baction=["']#?["']|\bonsubmit=["']return false)/i,
+    message: 'Form that goes nowhere: the conversion action does not exist.',
+    fix: 'Point action at a real endpoint (or a mailto/handler) and show a success state.',
+  },
+  {
+    id: 'dead-anchor',
+    pattern: /<a\b[^>]{0,600}\bhref=["']#["']/i,
+    message: 'Link to href="#" goes nowhere.',
+    fix: 'Link the logo to "/" and each button to a real URL or section id.',
+  },
+  {
+    id: 'gradient-orb',
+    pattern: /\brounded-full\b[^"']{0,800}\bblur-3xl\b|\bblur-3xl\b[^"']{0,800}\brounded-full\b|\bblur-\[100px\]/,
+    message: 'Blurred colour orb used as background decoration.',
+    fix: 'Use real imagery, a texture, or a plain background.',
+  },
+  {
+    id: 'sparkles-icon',
+    pattern: /\bSparkles\b[^;\n]{0,800}["']lucide-react["']/,
+    message: 'Sparkles icon standing in for "AI" or "premium".',
+    fix: 'Name the feature in words instead of an ambiguous icon.',
+  },
+];
