@@ -47,7 +47,7 @@ placeholder that the user fills or deletes before launch.
 | Testimonial | A real person said it and agreed to its use. | Full name, job title, company; short and specific, ideally with an outcome. NN/G found B2B readers check the title and company, and respond to quotes that show doubt turning into confidence. |
 | Customer logos | Real customers who gave permission. | Recognisable logos, with a number or milestone beside them. A logo strip alone is weak proof, and the logo wall is a stock pattern of generated pages. |
 | Case study | A real project with a real client. | Problem, what was done, result with a number, client named if permitted. |
-| Numbers | The business can reproduce the figure. | The figure with its unit and context: "[number] pianos restored in [area] since [year]" says more than a bare "[number]+". Give the baseline for any improvement claim. |
+| Numbers | The business can reproduce the figure. | The figure with its unit and context: "[number] locks fitted in [area] since [year]" says more than a bare "[number]+". Give the baseline for any improvement claim. |
 | Ratings and reviews | Collected from real buyers, unfiltered. | Average, count and source. Suppressing negative reviews is itself banned in the US. |
 | Track record | Years in business, completed jobs, units sold. | As a sentence with context, near the action it supports. |
 | Milestones | Real and dated: launch, release, funding, a sold-out edition. | With the date. A dated element shows the business is active. |
@@ -69,7 +69,7 @@ instead:
 - Say it once. The same figure in the hero, a proof band and the footer
   stops reading as evidence and starts reading as padding.
 - Use the brief's own terms. If the brief says (an invented example) "11
-  years in business", write that, not "11 years restoring concert pianos": the
+  years in business", write that, not "11 years fitting high-security locks": the
   second adds a claim about what the years were spent on.
 - Context for a figure (what kind of work, where, since when) comes only
   from the brief. If it is not there, ask, or add a placeholder for it; do

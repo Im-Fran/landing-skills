@@ -55,7 +55,7 @@ price, process or client.
 
 | Fails the swap test | Passes |
 |---|---|
-| We make your project a reality. | We tune pianos in [area] and leave a note of what we adjusted. |
+| We make your project a reality. | We change locks in [area] and hand you every key we cut. |
 | Calidad y compromiso en cada trabajo. | Grupos de seis en piscina temperada, en Concepción. |
 
 Run it on the headline, the subhead, every section heading and every line of
