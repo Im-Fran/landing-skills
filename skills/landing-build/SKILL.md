@@ -29,7 +29,7 @@ Read these from the user's project before writing code.
 
 | File | What you take from it |
 |---|---|
-| `landing/brief.md` | stack, language, the single conversion action and its fields, the production domain if known |
+| `landing/brief.md` | the fields `landing-skills:landing-page` writes. You use: Language (for `lang`); Conversion action (either a form with its fields and its endpoint or `none yet`, or an outside URL); Stack (as named, or `detect`); Domain (the production domain, or `unknown`); Contact routes (for the footer and `/form-error/`); Assets available |
 | `landing/copy.md` | one H2 per page section in page order; the last H2, `Placeholders`, lists every gap |
 | `landing/direction.md` | typefaces with source and licence, the layout row for each section, imagery with aspect ratios, surfaces, and the final H2 `Motion and 3D intent` |
 | `landing/tokens.css` | the custom properties: `--color-*`, `--font-*`, `--text-*`, `--space-*`, `--radius-*` |
@@ -45,8 +45,13 @@ When an input is missing:
   without it, write `landing/tokens.css` yourself with the five prefixes,
   derive the values from the brand constraints the user gives, and tell the
   user these tokens are provisional.
-- No `brief.md`: ask for the stack, the language, the conversion action and
-  where form submissions should go. Detect the stack from the project files
+- No `brief.md`: ask for the language, the conversion action (a form and
+  where it should post, or an outside URL), the production domain and a
+  contact route.
+- A brief field that says `unknown` or `none yet` is a gap, not an error:
+  build with the rule this skill gives for it (no URL tags without a
+  domain, the `/api/lead` placeholder without an endpoint, a placeholder
+  contact line without contact routes) and list it in the hand-off. Detect the stack from the project files
   (see "Stack detection") rather than asking when you can.
 
 ## Process
@@ -66,9 +71,11 @@ Before any markup, write down:
   for colour, type, spacing and radius.
 - Every image the direction asks for, its aspect ratio, and whether the file
   exists.
-- The form fields the conversion action needs, and the endpoint. If the user
-  has no endpoint yet, the form posts to `/api/lead` and that gap goes in the
-  hand-off (step 11).
+- The conversion action from the brief: an outside URL (a link, no form),
+  or a form with its fields and endpoint. With the endpoint `none yet`, the
+  form posts to `/api/lead` and that gap goes in the hand-off (step 11).
+- The Domain (known or `unknown`) and the Contact routes, which the head,
+  the footer and `/form-error/` need.
 
 ### 3. Write the head
 
@@ -142,14 +149,28 @@ image, so the frames show the planned layout rather than a row of identical
 dashed boxes (`references/css.md`, Media placeholders). Never draw a fake
 product screen and present it as the product.
 
-### 8. Build the form
+### 8. Build the conversion action
 
-Read `references/forms-a11y.md`. The non-negotiable parts:
+The brief's Conversion action decides what you build:
 
-- `<form action="..." method="post">` with a real endpoint. If none exists
-  yet, use `action="/api/lead"`, put an HTML comment beside it saying the
-  endpoint does not exist yet, and list it in the hand-off.
-  `landing-skills:landing-launch` builds a Worker at that path.
+- **An outside URL** (checkout, booking page, app store): the action is a
+  link, `<a class="button" href="https://...">` with the label from
+  `copy.md`. There is no form, no `form.js`, and no `/thanks/` or
+  `/form-error/` page; skip the rest of this step. If the brief says the
+  click should be counted, `landing-skills:landing-launch` adds the beacon.
+- **A form with an endpoint the user already has**: the form posts to that
+  URL and the `/api/lead` placeholder is not used. Build the result pages
+  only if that endpoint redirects to them; otherwise say in the hand-off
+  where the endpoint sends the visitor.
+- **A form with the endpoint `none yet`**: the form posts to the
+  placeholder `/api/lead`, which `landing-skills:landing-launch` builds as a
+  Worker.
+
+For a form, read `references/forms-a11y.md`. The non-negotiable parts:
+
+- `<form action="..." method="post">` with the endpoint from the brief, or
+  `action="/api/lead"` with an HTML comment beside it saying the endpoint
+  does not exist yet, listed in the hand-off.
 - Every field has a `name`, a visible `<label>`, the right `type` and
   `autocomplete`, and a hint linked with `aria-describedby` when the format
   needs explaining.
@@ -157,8 +178,12 @@ Read `references/forms-a11y.md`. The non-negotiable parts:
   with a `303` redirect to one of two static pages you build now:
   `/thanks/` and `/form-error/`. Once `landing-skills:landing-launch` adds
   Turnstile, a visitor without JavaScript has no token and always lands on
-  `/form-error/`, so that page must offer another way to get in touch.
-- An optional script may submit with `fetch`, and it shows success only
+  `/form-error/`, so that page must offer another way to get in touch,
+  taken from the brief's Contact routes.
+- Always ship `form.js` from `references/forms-a11y.md` as progressive
+  enhancement. The form works without it; the file is still part of the
+  build, because `landing-skills:landing-motion` extends the states it sets
+  and `landing-skills:landing-launch` checks them. It shows success only
   when the response is a 2xx and its JSON body says `ok: true`. A 2xx
   alone proves only that something answered: `fetch` follows a redirect and
   reports the page it lands on as 200, and a static host can answer a POST
@@ -178,7 +203,9 @@ phones with no replacement fails this floor; let the links wrap instead.
 
 ### 10. Leave motion out
 
-Build every element in its final, visible state. No entrance animations, no
+Under reduced motion it is movement that gets reduced, never feedback, so
+write no global rule that zeroes transitions. Build every element in its
+final, visible state. No entrance animations, no
 `opacity: 0` waiting for a script, no scroll libraries. Where the direction
 names a 3D or animated moment, place its still poster image or a labelled
 placeholder at the final size, so the layout does not shift when
@@ -190,7 +217,9 @@ Run "Definition of done". Then tell the user, in a short list:
 
 - what was built and where (files, output folder),
 - every `[PLACEHOLDER: ...]` still on the page and every asset to supply,
-- the form endpoint status ("posts to `/api/lead`, which does not exist yet"),
+- the conversion action as built: a link to an outside URL, a form posting
+  to the user's endpoint, or a form posting to `/api/lead`, which does not
+  exist yet,
 - every field `name` the form submits. The `landing-skills:landing-launch`
   Worker reads only `email` and the `leave_blank` honeypot and stores
   nothing else; any other field (name, phone, message) is dropped silently
@@ -198,8 +227,10 @@ Run "Definition of done". Then tell the user, in a short list:
   each field and ask for that extension,
 - values composed because no token existed, and every optional token
   `tokens.css` lacked with the fallback the recipes used for it,
-- the production domain if it is unknown, and the URL tags left out because
-  of it (canonical, `og:url`, `og:image`, sitemap),
+- the production domain if the brief says `unknown`, and the URL tags left
+  out because of it (canonical, `og:url`, `og:image`, sitemap),
+- contact routes the brief left `unknown`, which the footer and
+  `/form-error/` show as placeholders,
 - every font file that was not subset, with its size in bytes,
 - every Definition of done check that was not run, marked "not run" with
   the reason,
@@ -277,8 +308,10 @@ is the same failure as a fake form success.
       it still matches `tokens.css`.
 - [ ] No `href="#"`, no `action="#"` or empty `action`, no
       `onsubmit="return false"`. The logo links to `/`.
-- [ ] Every form field has a `name` and a visible label. `/thanks/` and
-      `/form-error/` exist, both `noindex`. A failed submission shows an
+- [ ] For a form: every field has a `name` and a visible label, `form.js`
+      is loaded, and `/thanks/` and `/form-error/` exist, both `noindex`.
+      For an outside URL: the action is a link to that URL and no form
+      or result page was built. A failed submission shows an
       error and keeps the input. The hand-off lists every field name.
 - [ ] The page CSS uses the tokens and declares none of them. This finds
       redeclared tokens and should print nothing (for frameworks, point it at

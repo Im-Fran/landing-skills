@@ -343,9 +343,9 @@ Astro and Next have their own image components; see `adapters.md`.
 
 ## JavaScript
 
-- The static page needs none. The only script this skill writes is the
-  optional form enhancement in `forms-a11y.md`, loaded with `defer` (or as a
-  module), under 2 KB.
+- The static page needs none to render. The only script this skill writes
+  is the form enhancement in `forms-a11y.md`, shipped with every form,
+  loaded with `defer` (or as a module), under 2 KB.
 - Anything heavy that the direction asks for later (3D, animation
   libraries) loads after first paint in its own chunk. `adapters.md` shows
   how in Vite with React.

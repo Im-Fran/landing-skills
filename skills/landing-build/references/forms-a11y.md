@@ -12,7 +12,7 @@ lead was lost while the visitor was told it had arrived.
 - Markup
 - Labels, hints and placeholder text
 - States
-- The optional enhancement script
+- The enhancement script
 - What the endpoint must do
 - The two result pages
 - Spam protection
@@ -29,7 +29,7 @@ lead was lost while the visitor was told it had arrived.
 |---|---|
 | `<form action="#" method="post">` | `<form action="/api/lead" method="post">` pointing at an endpoint that stores or forwards the data |
 | `<form id="f">` plus `e.preventDefault()` and a hidden "thanks" paragraph revealed by script | no script needed; the endpoint redirects to `/thanks/` or `/form-error/` |
-| `onsubmit="return false"` | nothing on `onsubmit`; an optional script uses `fetch` and reports what the server said |
+| `onsubmit="return false"` | nothing on `onsubmit`; the enhancement script uses `fetch` and reports what the server said |
 
 If the user has no endpoint yet, still write `action="/api/lead"`, mark it,
 and say so in the hand-off:
@@ -208,7 +208,13 @@ classes. The input border needs 3:1 against the background (see Contrast).
 | error with JS | the error text, input kept | script |
 | error without JS | the `/form-error/` page | endpoint `303` redirect |
 
-## The optional enhancement script
+## The enhancement script
+
+Always ship it. The form works without JavaScript, which is what makes the
+script progressive enhancement rather than a requirement, but the file is
+part of every build with a form: `landing-skills:landing-motion` extends
+the states it sets (`disabled` while sending, `data-state` on the status
+line) and `landing-skills:landing-launch` checks them.
 
 Lets the visitor stay on the page. It reads its messages from the form's
 `data-` attributes, so the same file serves any language. Tested in a

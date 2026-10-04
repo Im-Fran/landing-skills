@@ -177,8 +177,11 @@ Checked with Next 16.3.8 and the App Router.
 - The form is a plain `<form action="/api/lead" method="post">` in a server
   component. A static export has no server of its own, so the endpoint is
   external, as in plain HTML. Load `form.js` from `public/` with a
-  `<script src="/form.js" defer>` or rewrite it as a small client component
-  that keeps the same rules.
+  `<script src="/form.js" defer>`. If you rewrite it as a client component,
+  keep its markup contract exactly (`disabled` on the button while sending,
+  `data-state` and the message on `.form-status`), because
+  `landing-skills:landing-motion` and `landing-skills:landing-launch` rely
+  on it.
 - The result pages are `app/thanks/page.jsx` and `app/form-error/page.jsx`,
   each exporting `metadata` with `robots: { index: false }`.
 - Weight: the test export shipped about 175 KB gzipped of framework scripts

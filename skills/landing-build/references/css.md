@@ -81,7 +81,7 @@ fallback:
   ```css
   /* Broken in browsers without color-mix(): the second line still wins
      at parse time, then fails at computed time and the background is unset. */
-  .button:hover { background: var(--color-action); background: color-mix(in oklch, var(--color-action) 85%, var(--color-ink)); }
+  .notice { background: var(--color-bg); background: color-mix(in oklch, var(--color-action) 12%, var(--color-bg)); }
   ```
 
   Put newer colour functions inside `@supports` instead (see "Colour with
@@ -205,12 +205,14 @@ sits in `@supports` with a plain token as the base:
 ```css
 .button { background: var(--color-action); color: var(--color-on-action); }
 
-/* Preferred: a hover token from the direction, no new function needed. */
-.button:hover { background: var(--color-action-hover); }
-
-/* When there is no hover token: */
+/* Hover only where a pointer can hover, so a tap on a touch screen
+   does not leave the hover colour stuck. */
+@media (hover: hover) {
+  .button:hover { background: var(--color-action-hover); }
+}
+.notice { background: var(--color-bg); }
 @supports (color: color-mix(in oklch, red, blue)) {
-  .button:hover { background: color-mix(in oklch, var(--color-action) 85%, var(--color-ink)); }
+  .notice { background: color-mix(in oklch, var(--color-action) 12%, var(--color-bg)); }
 }
 @supports (color: oklch(from red l c h)) {
   .tag { background: oklch(from var(--color-action) 0.95 0.03 h); }
@@ -399,7 +401,16 @@ the direction asks for a sticky one, add
 ## Interactive states
 
 Every control gets default, hover, `:focus-visible`, `:active` and, for
-buttons that submit, `:disabled`.
+buttons that submit, `:disabled`. Hover rules go inside
+`@media (hover: hover)`, as in "Colour with oklch()", so touch screens do
+not keep a stuck hover colour; `:focus-visible`, `:active` and `:disabled`
+stay outside it, because keyboard and touch users need them.
+
+Under `prefers-reduced-motion: reduce`, movement is what gets reduced, not
+feedback. Never write a global rule that zeroes every transition or
+animation; a short colour change on hover, focus or press stays, and
+`landing-skills:landing-motion` removes only parallax, scrubbing and
+autoplay. This skill writes no transitions, so it has nothing to reduce.
 
 ```css
 :focus-visible { outline: 3px solid var(--color-ink); outline-offset: 3px; }
