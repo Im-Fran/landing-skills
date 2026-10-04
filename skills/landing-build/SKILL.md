@@ -215,7 +215,8 @@ placeholder at the final size, so the layout does not shift when
 
 Run "Definition of done". Then tell the user, in a short list:
 
-- what was built and where (files, output folder),
+- what was built and where (files, output folder), and the resolved stack
+  written into the brief's Stack field if it said `detect`,
 - every `[PLACEHOLDER: ...]` still on the page and every asset to supply,
 - the conversion action as built: a link to an outside URL, a form posting
   to the user's endpoint, or a form posting to `/api/lead`, which does not
@@ -242,6 +243,13 @@ Run "Definition of done". Then tell the user, in a short list:
 
 Check the project root in this order and stop at the first match. The
 `Stack` field in `brief.md` decides when the project folder is empty.
+
+Once the stack is resolved, write it back: if the brief's Stack field says
+`detect`, replace that one word with the resolved stack (for example
+`Astro`, or `plain HTML and CSS`) and change nothing else in
+`landing/brief.md`. Later skills read the field and should not meet an
+unresolved word. A stack the user named stays as written. When there is no
+`landing/brief.md`, do not create one.
 
 | Signal in the project | Stack | Adapter section |
 |---|---|---|
