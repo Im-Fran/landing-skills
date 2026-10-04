@@ -14,7 +14,7 @@ judgement. Check them at 360, 768, 1280 and 1440px wide with the real copy.
 - Vertical rhythm
 - Variety between sections
 - Alignment
-- Where to spend boldness
+- Where to spend boldness (the inverted dark band is a choice)
 - Hero patterns
 - Navigation
 - Failures seen in unguided pages, and the fix
@@ -135,9 +135,36 @@ full-bleed photograph, a band of the accent ground, a type-only statement.
 Everything else stays quiet so those moments read. A page where every
 section has a big visual idea has none.
 
-Good places for it: the hero, the statement that answers the visitor's main
-fear or doubt, and the product itself when it can be shown. Poor places: the
-FAQ, the footer, the logo row.
+Choose them by this test: the section that answers the "must believe" line
+in `direction.md` (the visitor's main fear or doubt), and the section that
+shows the real thing (product, place, work) when an asset or a strong type
+treatment can carry it. Short or logistic sections (FAQ, specs, footer, the
+logo row) are never the loud ones.
+
+### The inverted dark band is a choice
+
+A full-width section that flips to a dark ground with light text appeared
+in every test run of this skill, whatever the client. It works, which is why
+it became a habit. Use it only when the content needs a change of ground at
+that point, and write the reason in the section map: for example, the
+section moves the reader from one state to another (day to night, before to
+after, outside to inside), or it shows something that is itself dark (a
+product in a dark finish, a night scene, a screen in dark mode).
+
+Other ways to make one section loud without inverting the ground:
+
+- Scale on the same ground: one statement at display size, alone, with open
+  rhythm above and below and nothing else in the section.
+- A full-bleed image or drawing that carries the section, with the text set
+  beside or below it on the page ground.
+- A step of the palette instead of an inversion: a tinted surface or a light
+  band from the anchor colour, with the ink unchanged.
+- A change of width or alignment: the one section that breaks the main
+  column, runs off-grid, or sits on a different axis.
+
+If you do use a dark band, it is one of the page's one or two loud moments,
+and its text and accent pairs get their own contrast check
+(`colour.md`, accent on a band).
 
 ## Hero patterns
 

@@ -6,13 +6,16 @@ written.
 ## Contents
 
 - Why OKLCH
-- Method: from the subject to a palette
+- Method: from the subject to a palette (the ink and the ground are derived
+  too)
 - Tinted neutrals
-- The accent and its one job
+- The accent and its one job (links, first-reach accents, colour
+  convergence check)
 - Cream, paper and other warm grounds
 - Dark mode designed on purpose
 - Contrast: the pass or fail test
-- Writing the tokens (text tokens per ground, dark theme skeleton)
+- Writing the tokens (text tokens per ground, accent on a band, dark theme
+  skeleton)
 - Browser support and fallbacks
 
 ## Why OKLCH
@@ -29,8 +32,8 @@ OKLCH L is still not a contrast ratio. See "Contrast" below.
 
 ## Method: from the subject to a palette
 
-1. Take the one to three anchors from `direction.md`: a material, a product
-   colour, a place, a document. Estimate each as OKLCH and write the three
+1. Take the three anchors from `direction.md`: a material, a product
+   colour, a place, the light at a time of day. Estimate each as OKLCH and write the three
    numbers down. If a photo or logo exists, sample it. If not (the brief
    gives only names such as a colourway or a material, or a description),
    estimate from them and mark the value provisional in `direction.md`.
@@ -73,22 +76,41 @@ syntax, and tints from `color-mix()`. Both belong in the build CSS behind
 ```
 
 When the state matters for contrast (a pressed button with text on it),
-write it as its own token and check its ratio, as the worked example in
-`SKILL.md` does with `--color-action-hover`.
+write it as its own token and check its ratio, as `references/example.md` does with `--color-action-hover`.
+
+### The ink and the ground are derived too
+
+The darkest text colour and the page ground are the two values agents most
+often reach for without deriving: a blue-tinted near-black on a cool pale
+ground. That pair is one option among many. The ink's hue follows the
+subject like every other colour:
+
+- a warm ink (hue roughly 40 to 80) from tar, smoke, walnut, peat, rust;
+- a green ink (hue roughly 130 to 170) from moss, pine, deep water, slate
+  roofs that have weathered green;
+- a neutral ink (chroma under about 0.005) from iron, charcoal, black paint;
+- a cool ink (hue roughly 200 to 250) from steel, night sky, a winter sea,
+  when the subject really is cool.
+
+The ground follows the same anchor or its partner. A tinted near-white, a
+deeper tone, or a dark ground are all valid; record which anchor gave it.
 
 ### A worked derivation
 
-Subject: a signal-maintenance contractor whose crews wear graphite overalls
-and paint trackside markers in signal yellow. Anchors: graphite (hue 250, a
-cool grey) and signal yellow (hue 95).
+The values below belong to one invented client. Do not reuse them; the
+colour convergence check below counts them.
+
+Subject: a river-ferry operator whose boats are painted moss green, with
+signal-yellow markings on the boarding ramps. Anchors: the moss-green hull
+paint (hue 150) and the signal yellow (hue 95).
 
 | Role | oklch | hex | Note |
 |---|---|---|---|
-| bg | 0.97 0.006 250 | #f2f5f9 | graphite hue, barely tinted |
-| ink | 0.25 0.02 250 | #1a222b | 14.66:1 on bg |
-| ink-muted | 0.48 0.02 250 | #555f69 | 5.98:1 on bg |
-| marker (fill) | 0.84 0.15 95 | #e9c944 | large yellow fills; ink on it is 9.80:1 |
-| marker-text | 0.50 0.11 95 | #776100 | the same hue as text on bg, 5.49:1 |
+| bg | 0.97 0.01 140 | #f2f7f0 | hull green, barely tinted |
+| ink | 0.26 0.035 150 | #17291b | green-black from the hull; 14.12:1 on bg |
+| ink-muted | 0.47 0.03 150 | #4f6052 | 6.19:1 on bg |
+| marker (fill) | 0.84 0.15 95 | #e9c944 | large yellow fills; ink on it is 9.42:1 |
+| marker-text | 0.50 0.11 95 | #776100 | the same hue as text on bg, 5.50:1 |
 
 The yellow at full strength fails as text on a light ground, so the text
 version drops to L 0.50 and chroma 0.11. Same hue, two jobs, two tokens.
@@ -111,19 +133,30 @@ is a warm black `#14120B`.
 
 ## The accent and its one job
 
-- One accent. Use it for the primary action, links, and at most one
-  highlight per section. Neutrals carry everything else. The 60-30-10 split
+- One accent. Use it for the primary action and at most one highlight per
+  section. Neutrals carry everything else. The 60-30-10 split
   is a convention with no source behind it; the useful part is that the
   accent is the smallest share.
 - The accent is the colour of "do this". If it also colours icons, borders,
   headings and backgrounds, it stops pointing at the action.
+- `--color-action` is the control colour: the fill of the primary button.
+  Inline links in running text use the ink with an underline by default.
+  Use the action colour for links only when it passes 4.5:1 as text on the
+  ground where the link sits; a bright accent that works as a fill often
+  fails as text, and then it stays on the buttons.
+- Status colours (error, success, warning) are not a second accent. They
+  mark a state where it occurs and nowhere else. Keep them clearly apart in
+  hue from the action colour, so an error message never reads as a button;
+  if the action colour is red, move the error hue away from it and pair the
+  error with a text label or icon. Check their contrast like any text.
 - No gradient as the main colour device. If the brand has a signature
   gradient (Stripe's animated canvas is one), it is a brand asset, recorded
   as such; otherwise use flat colour.
 - No coloured glows, no blurred colour orbs, no coloured left border on
   cards. These fake emphasis; spacing, size and a plain rule do it honestly.
 - A shadow, if any, is tinted with the ink colour, for example
-  `0 1px 2px oklch(0.25 0.02 250 / 0.12)`, and used only on elements that
+  `0 1px 2px color-mix(in oklch, var(--color-ink) 12%, transparent)`, and
+  used only on elements that
   really sit above others. A black shadow at 10 percent on every card is the
   framework default.
 - Choose a temperature that departs from the category default when the brand
@@ -131,6 +164,39 @@ is a warm black `#14120B`.
   where the category runs cold blue and green; a warm black on a coding tool
   (Cursor); a paper tone on an agent payments product (Agentcard,
   `#F2F1EC`) in a category that usually goes dark.
+
+### First-reach accents
+
+Besides the defaults this file already names (Tailwind indigo and violet,
+terracotta on cream), readers of this skill kept reaching for two accents
+across unrelated clients:
+
+- acid lime or chartreuse (a very light, very saturated yellow-green, OKLCH
+  hue roughly 115 to 130), usually on a dark band;
+- a stamp or vermilion red (a saturated red, hue roughly 25 to 35) on a pale
+  ground.
+
+Neither is banned. Each is allowed only when derived from one of your
+anchors, and it falls under the colour convergence check below.
+Treat any accent you had in mind before deriving the palette as first-reach,
+listed here or not; this list will go stale as habits move.
+
+A warning sign: when the accent fails contrast on the page ground and needs
+a border or a dark band to work, the colour is fighting the page. One reader
+measured 1.26:1 for a lime accent on its ground and added an ink border to
+rescue it. When that happens, choose another accent, or give that colour
+another role (a large fill behind ink text, a band ground) and derive a
+separate action colour that passes on the ground.
+
+### Colour convergence check
+
+This is the one statement of the rule; `SKILL.md` points here. Run it once
+the palette is derived, not before. If your ink, ground or accent lands
+within a few hundredths of L and C and about 15 degrees of hue of a value
+shown anywhere in this skill (this file, `example.md`), or is one of the
+first-reach accents above, either derive it again from your anchors, or keep
+it and write the sentence that says why this client needs it, one that would
+be false for another client.
 
 ## Cream, paper and other warm grounds
 
@@ -169,16 +235,16 @@ When you design one, design it as a second palette:
    it keeps contrast without glowing.
 6. Re-check every pair. Do not assume the light theme's ratios carry over.
 
-The graphite example above, as a dark theme:
+The ferry example above, as a dark theme:
 
 | Role | oklch | hex | Contrast |
 |---|---|---|---|
-| bg | 0.18 0.014 250 | #0d1218 | |
-| surface (one level up) | 0.21 0.015 250 | #13191f | |
-| ink | 0.92 0.008 250 | #e1e5ea | 14.85:1 on bg |
-| ink-muted | 0.75 0.012 250 | #a8afb5 | 8.46:1 on bg, 7.97:1 on surface |
-| marker | 0.88 0.12 95 | #f0d777 | 13.14:1 on bg; chroma cut 20 percent |
-| (rejected) grey text | 0.55 0.012 250 | #6c7278 | 3.88:1: fails body text |
+| bg | 0.18 0.02 150 | #0b140d | |
+| surface (one level up) | 0.21 0.022 150 | #111b13 | |
+| ink | 0.92 0.01 150 | #e0e6e1 | 14.84:1 on bg |
+| ink-muted | 0.75 0.015 150 | #a8b1a9 | 8.47:1 on bg, 7.97:1 on surface |
+| marker | 0.88 0.12 95 | #f0d777 | 13.09:1 on bg; chroma cut 20 percent |
+| (rejected) grey text | 0.55 0.015 150 | #6c746d | 3.89:1: fails body text |
 
 In CSS, put the dark values in a `@media (prefers-color-scheme: dark)` block
 that redefines the same `--color-*` tokens on `:root`. The build sets
@@ -186,6 +252,12 @@ that redefines the same `--color-*` tokens on `:root`. The build sets
 `light-dark()` was not confirmed by the research; the media query is the safe
 route. "Writing the tokens" below shows how the dark block fits the
 hex-first pattern.
+
+Record the theme decision in the `Colour` section of `direction.md`: light
+only, dark only, or both. The tokens file holds no `color-scheme` property;
+`landing-skills:landing-build` sets `color-scheme: light`, `dark` or
+`light dark` on the page to match, so form controls and scrollbars follow
+the theme you designed.
 
 ## Contrast: the pass or fail test
 
@@ -224,7 +296,8 @@ Node. It converts OKLCH to sRGB and prints the WCAG 2.2 ratio and the hex
 value to use as the fallback.
 
 ```js
-// contrast.mjs: node contrast.mjs "oklch(0.25 0.02 250)" "oklch(0.97 0.006 250)"
+// contrast.mjs: node contrast.mjs "<foreground oklch()>" "<background oklch()>"
+// Sanity test: node contrast.mjs "oklch(0 0 0)" "oklch(1 0 0)" prints 21.00:1
 function toLinearSrgb(str) {
   const [L, C, H] = str.match(/[\d.]+/g).map(Number);
   const l = L > 1 ? L / 100 : L; // accepts 0.62 or 62%
@@ -267,15 +340,20 @@ block. Two declarations of one custom property in the same rule do not give a
 fallback: the custom property takes the last value whether or not the
 browser can use it as a colour.
 
+The skeletons below are templates. Each `<slot>` stands for a value you
+derived and recorded in `direction.md`; the CSS is not valid until every slot
+is replaced. They hold no colours on purpose, so that no value travels from
+this file into a client's palette.
+
 ```css
 :root {
-  --color-bg: #f2f5f9;
-  --color-ink: #1a222b;
+  --color-bg: <ground, hex>;
+  --color-ink: <ink, hex>;
 }
 @supports (color: oklch(0 0 0)) {
   :root {
-    --color-bg: oklch(0.97 0.006 250);
-    --color-ink: oklch(0.25 0.02 250);
+    --color-bg: <ground, oklch()>;
+    --color-ink: <ink, oklch()>;
   }
 }
 ```
@@ -293,13 +371,22 @@ table of `direction.md`.
 
 ```css
 :root {
-  --color-band: #1a222b;
-  --color-on-band: #e1e5ea;
-  --color-on-band-muted: #a8afb5;
+  --color-band: <band ground, hex>;
+  --color-on-band: <text on the band, hex>;
+  --color-on-band-muted: <captions on the band, hex>;
 }
 ```
 
-Computed: on-band on band 12.62:1, on-band-muted on band 7.19:1.
+The accent needs the same care. An accent that passes on the page ground can
+fail on a dark band: in the ferry example, the marker-text yellow (L 0.50)
+gives 5.50:1 on the light ground and 2.57:1 on a band of the green ink. Two
+ways out, both recorded with their ratios:
+
+- a lighter step of the accent as its own token for use on the band, such as
+  `--color-action-on-band` (in the ferry example the fill yellow at L 0.84
+  gives 9.42:1 on the band); or
+- keep the accent off the band, and put the band's action on the page
+  ground.
 
 ### With a dark theme
 
@@ -308,24 +395,24 @@ dark rule comes after the light one so it wins in dark mode.
 
 ```css
 :root {
-  --color-bg: #f2f5f9;
-  --color-ink: #1a222b;
+  --color-bg: <light ground, hex>;
+  --color-ink: <light ink, hex>;
 }
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-bg: #0d1218;
-    --color-ink: #e1e5ea;
+    --color-bg: <dark ground, hex>;
+    --color-ink: <dark ink, hex>;
   }
 }
 @supports (color: oklch(0 0 0)) {
   :root {
-    --color-bg: oklch(0.97 0.006 250);
-    --color-ink: oklch(0.25 0.02 250);
+    --color-bg: <light ground, oklch()>;
+    --color-ink: <light ink, oklch()>;
   }
   @media (prefers-color-scheme: dark) {
     :root {
-      --color-bg: oklch(0.18 0.014 250);
-      --color-ink: oklch(0.92 0.008 250);
+      --color-bg: <dark ground, oklch()>;
+      --color-ink: <dark ink, oklch()>;
     }
   }
 }

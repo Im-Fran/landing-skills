@@ -18,6 +18,7 @@ Two things to keep in mind:
 
 ## Contents
 
+- The convergence this skill exists to prevent
 - Cluster 1: the indigo scaffold
 - Cluster 2: the tasteful counter-default
 - Cluster 3: unconsidered type
@@ -25,8 +26,33 @@ Two things to keep in mind:
 - Cluster 5: template composition
 - Cluster 6: filler imagery and icons
 - Cluster 7: decoration that moves
+- Cluster 8: the drift of careful readers
 - Detector rules covered here
 - What the detector cannot see
+
+## The convergence this skill exists to prevent
+
+In a test for this skill, agents without guidance built landing pages for
+unrelated clients in different trades. Most of them landed on the same look:
+a cream or off-white background, a single dark green or terracotta accent,
+and the system font stack or Georgia. The one exception was a dark product
+page, and it chose near-black with one warm orange accent and the system
+stack. None of those values came from anything in the clients' subjects.
+
+Your own first idea is likely to land in the same place, which is why the
+process makes you write the reason down before you pick a value. The rule
+that follows from the research: a choice is a tell when it is the
+unconsidered default, and fine when it is chosen for a reason specific to
+the client. Cream is fine for a paper goods shop that photographs on paper.
+Inter is fine on a developer tool that pairs it with a mono face and says
+why. The sets of faces that are always a tell, or a tell unless justified,
+are stated once in `typography.md` ("Overused faces").
+
+The defaults to compare against in the default test: cream with one dark
+green or terracotta accent; system or Georgia type; near-black with a warm
+accent; indigo or violet; the trade's document (Cluster 8); a cool grey
+ground with a dark band, condensed capitals and one accent (Cluster 8); and
+every cluster below.
 
 ## Cluster 1: the indigo scaffold
 
@@ -161,6 +187,40 @@ change meaning (colour, underline, a pressed state). Button labels that say
 what happens, without an arrow. `landing-skills:landing-motion` implements
 the intent.
 
+## Cluster 8: the drift of careful readers
+
+What it looks like: the page styled as the trade's own document (a ledger,
+a blueprint, a spec sheet, a receipt), with a cool grey or pale blue
+ground, a blue-tinted near-black ink, one dark band, narrow even-stroke
+capitals like document lettering, and a single accent.
+
+Why it reads as generated: it is where agents following this skill drift
+when they derive everything from the easiest thing to name, the trade's
+paperwork. Three unrelated clients run through an earlier version of this
+skill all landed on it, two of them with the same type family. Each choice
+had a reason; the combination is still a house style.
+
+Way out:
+
+- Anchors from three kinds of source: material or object, place or light,
+  gesture or moment. Paperwork supplies one anchor at most.
+- Put "the trade's document" in the rejected directions unless you can say
+  why it is right for this client and wrong for a competitor with the same
+  paperwork.
+- Derive the ink and the ground from the anchors: warm, green or neutral
+  inks are as valid as a cool one, and a ground can be tinted, deep or dark.
+- Choose the display face from requirements that come from the material or
+  the moment, not only from lettering, and find candidates by searching a
+  catalogue rather than by recall (`typography.md`, "Searching a catalogue"
+  and "First-reach faces").
+- Treat the inverted dark band as a choice with a reason: use it only when
+  the content needs a change of ground at that point. Otherwise make the
+  section loud by scale on the same ground, a full-bleed image, a tinted
+  step of the palette, or a change of width (`layout.md`).
+- Check the accent against the first-reach accents in `colour.md` (acid
+  lime on a dark band, stamp red on a pale ground); keep one only when it is
+  derived from an anchor, with the reason recorded.
+
 ## Detector rules covered here
 
 `landing-skills:landing-review` ships a static detector. These are its
@@ -208,10 +268,10 @@ at 360 and 1440px.
 
 | Tell | How to check | Way out |
 |---|---|---|
-| The tasteful bundle (cream ground, terracotta or dark green accent, fashionable display serif) with values other than the two the detector knows | Compare your palette with the defaults named in `SKILL.md` | Anchor from the subject; record it |
+| The tasteful bundle (cream ground, terracotta or dark green accent, fashionable display serif) with values other than the two the detector knows | Compare your palette with "The convergence this skill exists to prevent" | Anchor from the subject; record it |
 | Two or more of Space Grotesk, Geist, Instrument Serif, Fraunces on one page | Read the typography table | Keep one with a reason, or none |
-| One Tier A face as both display and text, with no companion | Read the typography table | Pair it or replace it |
-| System stack, Arial or Roboto as the only face (always a tell); Georgia with no recorded reason | Read the font tokens | A chosen face with a licence, or Georgia with its reason |
+| One of Inter, Geist, Space Grotesk, Instrument Serif or Fraunces as both display and text, with no companion | Read the typography table | Pair it or replace it |
+| Any face in the "always a tell" or "tell unless justified" sets of `typography.md` ("Overused faces") without its reason | Read the font tokens and the typography table | A chosen face with a licence, or the face with its reason |
 | A face declared and never loaded | In the build, check every `font-family` has an `@font-face` or a stylesheet link | Load it or remove it |
 | The same radius and shadow on every element | Count distinct radius and shadow values in the build; one of each used everywhere is the tell | A radius scale; shadow only on raised elements |
 | Uniform section padding | Count distinct section paddings; one value on every section is the tell | Two or three rhythm tokens with jobs |
@@ -228,3 +288,4 @@ at 360 and 1440px.
 | Generic mock data in product fragments (filler client names, round sums) | Read the fragments | Content from the audience's real work, captioned as an illustration |
 | Text over a busy visual, unreadable at some width | Look at 360 and 1440px | Give the text its own columns or ground |
 | The same reveal or hover on every element | Read the motion intent | `none`, or named moments with purposes |
+| Cool grey ground, blue-tinted near-black ink, one dark band, condensed even-stroke capitals, one accent, often styled as the trade's document | Read the anchors, the rejected directions and the colour table together | Cluster 8 |
