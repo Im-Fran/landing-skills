@@ -19,27 +19,41 @@ brief the only source of facts.
 
 ## Inputs
 
-Read `landing/brief.md`. You need these fields:
+Read `landing/brief.md`, one line per field, in the shape that
+`landing-skills:landing-page` defines. The fields this skill uses:
 
-- Type of page (SaaS, product, service or studio, waitlist, event, or a mix).
-- Language, and for Spanish the country and the form of address.
-- Product or service: what it does, in the brief's words.
-- Audience, and what they use today.
-- The single conversion action.
+- Type: SaaS, product, service or studio, waitlist, event, or a mix.
+- Language: the language with its country variant (`es-CL`, `en-GB`), and
+  for Spanish the form of address (tú, usted, vos).
+- Product: what it does, with every fact given.
+- Audience: who it is for, and what they use or do today.
+- Conversion action: the single action and what the click does: the form's
+  fields and whether an endpoint exists, or the outside page it opens.
 - Pricing.
 - Proof available.
-- Assets available (photos, screenshots), because the copy names what each
-  visual shows.
+- Assets available, because the copy names what each visual shows.
 - Brand constraints, including any voice material.
+- Contact routes, which feed the footer.
+- Wanted moments (motion, 3D, scroll effects), which are not copy; see step
+  1.
 
-If `landing/brief.md` does not exist, ask the user for those fields. If you
-cannot ask, build the brief from the conversation, write it to
-`landing/brief.md`, and mark each unknown field as unknown. Never fill a gap
-with a guess: an unknown price, proof item or date becomes a placeholder in
-the copy and an open question for the user.
+The brief may also hold Stack and Domain; the copy does not use them.
 
-If the brief gives no language, ask. If it says Spanish without a country,
-ask which country, because vocabulary, form of address, number format and
+If `landing-skills:landing-page` has already written the brief, read it and
+do not rewrite it. Read the brief before asking the user anything, and ask
+only for what it does not hold.
+
+If `landing/brief.md` does not exist, ask the user for the fields above in
+one numbered list. If you cannot ask, write `landing/brief.md` yourself in
+the entry skill's shape: the same field names, one line each, `none` when
+the user said there is none, `unknown` when nobody answered, and
+`assumed: value (reason)` for a working choice the page does not claim (the
+page type, the language of the user's own message). Never fill a gap with a
+guess: an `unknown` price, proof item, date or click outcome becomes a
+placeholder in the copy and an open question for the user.
+
+If the Language field gives no country variant, or no form of address for
+Spanish, ask, because vocabulary, form of address, number format and
 currency all change with it.
 
 ## Process
@@ -49,6 +63,10 @@ currency all change with it.
 Before writing copy, make a working list of every fact the brief states:
 features, numbers, prices, dates, places, proof, terms. This list is the only
 source for claims on the page.
+
+Wanted moments (motion, 3D, scroll effects) are not facts for this list: do
+not write them as product facts or promises. A section may carry a `Note:`
+saying where a wanted moment sits, for the direction, outside the page text.
 
 ### 2. Decide what to do with everything the brief does not state
 
@@ -217,8 +235,8 @@ protocol and pricing.
 
 ### 10. Write the footer
 
-Include every contact route the brief gives (email, phone, address,
-messaging channel, hours). If it gives none, add a placeholder for at least
+Include every contact route the brief's Contact routes field gives (email,
+phone, address, messaging channel, hours). If it gives none, add a placeholder for at least
 one route besides the form.
 
 ### 11. Remove the tells
