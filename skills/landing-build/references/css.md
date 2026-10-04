@@ -454,6 +454,10 @@ and say what goes there:
 <div class="media-placeholder">[PLACEHOLDER: photo, the workshop bench from above, 4:3]</div>
 ```
 
+A placeholder that stands in for a motion or 3D moment from the
+direction's `Motion and 3D intent` also carries `data-moment="<name>"`
+with the direction's name for it (see `SKILL.md`, step 10).
+
 Plain visible text, no `role="img"`. Keep the placeholder's size close to the
 real image's so the page height is honest: one unguided build stacked
 several placeholder boxes with tall minimum heights and pushed the product image

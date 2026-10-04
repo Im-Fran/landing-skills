@@ -206,10 +206,24 @@ phones with no replacement fails this floor; let the links wrap instead.
 Under reduced motion it is movement that gets reduced, never feedback, so
 write no global rule that zeroes transitions. Build every element in its
 final, visible state. No entrance animations, no
-`opacity: 0` waiting for a script, no scroll libraries. Where the direction
-names a 3D or animated moment, place its still poster image or a labelled
-placeholder at the final size, so the layout does not shift when
-`landing-skills:landing-motion` mounts the real thing.
+`opacity: 0` waiting for a script, no scroll libraries.
+
+For every moment named in the direction's `Motion and 3D intent`, leave a
+stand-in: a still poster image, or a labelled placeholder, at the moment's
+final size and aspect ratio, so the layout does not shift when
+`landing-skills:landing-motion` mounts the real thing. Mark it with
+`data-moment="<name>"`, using the short name the direction gives that
+moment; motion finds its target by that attribute. The stand-in is
+complete without motion: a real image with `alt` text, or placeholder text
+that says what the moment shows.
+
+```html
+<div class="hero__media" data-moment="exploded-view">
+  <img src="/img/exploded-poster.jpg" width="1600" height="1000" alt="The device's layers spread apart: case, board, battery, lens">
+</div>
+```
+
+When the intent is `none`, add no `data-moment` elements.
 
 ### 11. Check and hand off
 
@@ -235,6 +249,9 @@ Run "Definition of done". Then tell the user, in a short list:
 - every font file that was not subset, with its size in bytes,
 - every Definition of done check that was not run, marked "not run" with
   the reason,
+- each moment from `Motion and 3D intent`: its `data-moment` name and where
+  its stand-in sits (section and element), or "none" when the intent is
+  `none`,
 - the next skill: `landing-skills:landing-motion` when the direction's
   `Motion and 3D intent` names a moment, then `landing-skills:landing-review`,
   then `landing-skills:landing-launch` for hosting and the form endpoint.
