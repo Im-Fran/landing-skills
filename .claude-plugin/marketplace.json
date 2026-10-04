@@ -1,6 +1,7 @@
 {
   "name": "landing-skills",
   "owner": { "name": "Im-Fran" },
+  "metadata": { "description": "Seven skills for building professional landing pages with no traces of AI generation." },
   "plugins": [
     {
       "name": "landing-skills",
