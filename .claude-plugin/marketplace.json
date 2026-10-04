@@ -1,0 +1,12 @@
+{
+  "name": "landing-skills",
+  "owner": { "name": "Im-Fran" },
+  "plugins": [
+    {
+      "name": "landing-skills",
+      "source": "./",
+      "version": "0.1.0",
+      "description": "Seven skills for building professional landing pages with no traces of AI generation."
+    }
+  ]
+}
