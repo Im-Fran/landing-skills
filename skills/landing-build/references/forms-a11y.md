@@ -63,13 +63,14 @@ Ask only for what the business needs to act on the lead.
   write in other valid ways.
 - Free text: a `<textarea>` with a hint saying what helps.
 
-The `landing-skills:landing-launch` Worker, as written, reads only `email`
-and the honeypot and stores nothing else. Every other field you add (name,
-postcode, phone, message) reaches the Worker and is dropped without an
-error. List every field `name` the form submits in the hand-off and ask
-`landing-skills:landing-launch` to extend the Worker's validation, its
-length caps and its table for each one. Its request size limit is 8 KB, so
-a long free-text field may need the cap raised as well.
+Give every field a `maxlength` (254 for an email address; a cap that fits
+the content for the others). The hand-off lists every field the form
+submits with its `name`, type, whether it is `required`, and that
+`maxlength`. `landing-skills:landing-launch` builds its Worker's
+validation, length caps and storage from that list, and sizes the request
+limit from the caps, so a long free-text field gets a limit that fits it.
+A field missing from the list is refused by that Worker and fails its
+checklist, so list them all.
 
 Field-count conversion figures in circulation come from aggregators the
 research could not trace, so do not quote them to the user.
@@ -93,7 +94,7 @@ A waitlist form (English, email only):
       data-failed="That did not go through. Check your connection and try again, or email hello@bread.example.">
   <div class="field">
     <label for="email">Email address</label>
-    <input id="email" name="email" type="email" autocomplete="email" required aria-describedby="email-hint">
+    <input id="email" name="email" type="email" autocomplete="email" required maxlength="254" aria-describedby="email-hint">
     <p class="hint" id="email-hint">One email when the next term opens. Nothing else.</p>
   </div>
   <div class="trap" aria-hidden="true">
@@ -106,11 +107,17 @@ A waitlist form (English, email only):
 ```
 
 A booking form for a local service (Spanish as written in Spain, four
-fields). It has no email field, because the business phones back. The
-`landing-skills:landing-launch` Worker as written requires `email` and
-would reject every submission of this form, so the hand-off must list
-`nombre`, `codigo_postal`, `telefono` and `descripcion` and ask for the
-Worker to validate and store these fields instead:
+fields). It has no email field, because the business phones back, so the
+hand-off says so: `landing-skills:landing-launch` then removes `email` from
+its Worker and makes the phone required. Its field list for the hand-off:
+
+```text
+nombre        text      required  maxlength 100
+codigo_postal text      required  maxlength 10
+telefono      tel       required  maxlength 30
+descripcion   textarea  required  maxlength 1000
+```
+
 
 ```html
 <h2 id="recogida-title">Pide la recogida de tu bici</h2>
@@ -120,21 +127,21 @@ Worker to validate and store these fields instead:
       data-failed="No pudimos enviar tu solicitud. Revisa tu conexión e inténtalo de nuevo.">
   <div class="field">
     <label for="nombre">Nombre completo</label>
-    <input id="nombre" name="nombre" type="text" autocomplete="name" required>
+    <input id="nombre" name="nombre" type="text" autocomplete="name" required maxlength="100">
   </div>
   <div class="field">
     <label for="cp">Código postal</label>
-    <input id="cp" name="codigo_postal" type="text" inputmode="numeric" autocomplete="postal-code" required aria-describedby="cp-hint">
+    <input id="cp" name="codigo_postal" type="text" inputmode="numeric" autocomplete="postal-code" required maxlength="10" aria-describedby="cp-hint">
     <p class="hint" id="cp-hint">Para saber si recogemos en tu zona.</p>
   </div>
   <div class="field">
     <label for="telefono">Teléfono</label>
-    <input id="telefono" name="telefono" type="tel" autocomplete="tel" required aria-describedby="telefono-hint">
+    <input id="telefono" name="telefono" type="tel" autocomplete="tel" required maxlength="30" aria-describedby="telefono-hint">
     <p class="hint" id="telefono-hint">Un móvil en el que podamos llamarte hoy.</p>
   </div>
   <div class="field">
     <label for="descripcion">Qué le pasa a la bici</label>
-    <textarea id="descripcion" name="descripcion" rows="4" required aria-describedby="descripcion-hint"></textarea>
+    <textarea id="descripcion" name="descripcion" rows="4" required maxlength="1000" aria-describedby="descripcion-hint"></textarea>
     <p class="hint" id="descripcion-hint">Dos o tres líneas bastan: qué notas y desde cuándo.</p>
   </div>
   <div class="trap" aria-hidden="true">
@@ -273,7 +280,9 @@ the hand-off as the contract when someone else owns the endpoint:
 
 - Accept `POST` with `application/x-www-form-urlencoded` or
   `multipart/form-data` (the script sends `FormData`, which is multipart),
-  with a `Content-Length` of at most 8 KB.
+  with a `Content-Length` no larger than the request limit. The launch
+  Worker sizes that limit from the fields' length caps (8 KB by default,
+  which fits an email-only form), so the caps in the hand-off matter.
 - Validate every field on the server; the browser checks are a courtesy.
 - If the `leave_blank` field is filled, answer as if it worked and store
   nothing.

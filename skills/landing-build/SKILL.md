@@ -221,11 +221,11 @@ Run "Definition of done". Then tell the user, in a short list:
 - the conversion action as built: a link to an outside URL, a form posting
   to the user's endpoint, or a form posting to `/api/lead`, which does not
   exist yet,
-- every field `name` the form submits. The `landing-skills:landing-launch`
-  Worker reads only `email` and the `leave_blank` honeypot and stores
-  nothing else; any other field (name, phone, message) is dropped silently
-  unless the Worker's validation and storage are extended for it, so name
-  each field and ask for that extension,
+- every field the form submits, one line each: its `name`, its type
+  (`email`, `tel`, `text`, `textarea`), whether it is `required`, and its
+  `maxlength` from the markup. `landing-skills:landing-launch` sets up its
+  Worker's validation, length caps, storage and request-size limit from
+  this list, and refuses a field it was not told about,
 - values composed because no token existed, and every optional token
   `tokens.css` lacked with the fallback the recipes used for it,
 - the production domain if the brief says `unknown`, and the URL tags left
