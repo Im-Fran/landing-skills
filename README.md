@@ -5,7 +5,7 @@ landing-skills is a Claude Code plugin of seven skills for building landing page
 ## Install
 
 ```
-/plugin marketplace add Im-Fran/LandingSkills
+/plugin marketplace add Im-Fran/landing-skills
 /plugin install landing-skills@landing-skills
 ```
 
