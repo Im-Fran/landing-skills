@@ -220,7 +220,7 @@ export function mountShaderBackground(host, { colorA, colorB }) {
 ```
 
 ```html
-<section class="field"><h2>[Section heading]</h2></section>
+<section class="bg-field"><h2>[Section heading]</h2></section>
 ```
 
 ```js
@@ -234,8 +234,10 @@ if (webglOk()) {
 }
 ```
 
-Pass colours from `tokens.css` as hex (convert first if the tokens use
-`oklch()`; OGL's `Color` reads hex). The CSS gradient uses the same two
+Pass colours from `tokens.css` as hex. `getComputedStyle` returns the token
+as written, so if the tokens use `oklch()`, convert first (OGL's `Color` and
+`THREE.Color` read hex); the hex fallbacks in the code below apply when a
+token is missing. The CSS gradient uses the same two
 colours, so the fallback and the shader look related.
 
 #### Reduced motion

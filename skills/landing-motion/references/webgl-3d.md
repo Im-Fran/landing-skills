@@ -343,7 +343,8 @@ about half a screen to one screen per layer the visitor must notice, and the
 whole sequence done within two to three screens. A full-page screenshot shows
 this runway as a long band with the object only at the top, because the
 canvas is sticky; that is expected. `landing-skills:landing-review` captures
-such sections viewport by viewport at several scroll positions.
+such sections with a full-page capture first and switches to viewport captures
+(top, then several scroll positions) only if that fails or is cut off.
 
 #### Fallback
 
@@ -739,6 +740,10 @@ export function mountTwoStages({ heroStage, explodeStage, explodeSection }) {
   io.observe(heroStage);
   io.observe(explodeStage);
   document.addEventListener('visibilitychange', decide);
+
+  // Context loss: both stages fall back to their poster; the next draw makes the current one live again.
+  canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); heroStage.classList.remove('is-live'); explodeStage.classList.remove('is-live'); });
+  canvas.addEventListener('webglcontextrestored', () => { dirty = true; });
 
   // Rotation on the hero stage only: drag and arrow keys.
   let dragX = null;
