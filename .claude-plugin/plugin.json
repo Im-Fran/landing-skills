@@ -1,0 +1,10 @@
+{
+  "name": "landing-skills",
+  "description": "Seven skills for building professional landing pages with no traces of AI generation: brief, copy, art direction, build, motion and 3D, review, and launch.",
+  "version": "0.1.0",
+  "author": { "name": "Im-Fran" },
+  "homepage": "https://github.com/Im-Fran/landing-skills",
+  "repository": "https://github.com/Im-Fran/landing-skills",
+  "license": "GPL-3.0-only",
+  "keywords": ["landing-page", "design", "copywriting", "motion", "webgl", "cloudflare"]
+}

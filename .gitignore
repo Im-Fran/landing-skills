@@ -1,1 +1,8 @@
 docs/superpowers/
+.superpowers/
+node_modules/
+dist/
+.astro/
+.wrangler/
+evals/
+.DS_Store
