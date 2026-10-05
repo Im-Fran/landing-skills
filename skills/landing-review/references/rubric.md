@@ -193,7 +193,7 @@ direction cluster.
 
 | ID | Check | A pass looks like | How to check | Severity |
 |---|---|---|---|---|
-| B1 | The head is complete | Specific `<title>`, meta description, `lang` matching the copy, favicon, `og:title`, `og:description`, `og:image`, Twitter card, canonical, `theme-color`. | source | minor each (major: no title or wrong `lang`) |
+| B1 | The head is complete | Specific `<title>`, meta description, `lang` matching the copy, favicon, `og:title`, `og:description`, `og:image`, Twitter card, canonical, `theme-color`. With `Domain: unknown` in `landing/brief.md`, `landing-build` leaves out canonical, `og:url` and `og:image` on purpose: list them under Open items, not as findings. | source | minor each (major: no title or wrong `lang`) |
 | B2 | Works without JavaScript | The built HTML contains the headline, offer, price and a working way to convert. Not an empty `<div id="root">` with no `<noscript>`. A form that only works through a JavaScript handler with no `action` fails here too. | source, visual (JS off) | major (blocker if the conversion cannot happen at all, see L1) |
 | B3 | Links go somewhere | No `href="#"`; the logo links to `/`; in-page links point at existing ids. | scan (`dead-anchor`), source | minor (blocker on the main CTA, see L1) |
 | B4 | CSS does what it says | Computed spacing matches the intent everywhere: no section padding cancelled by a more specific rule, no headings flush under borders, no borders wider than the content column, no text touching its rule. | visual, source: list every section in page order, header and footer included, with its computed top and bottom padding read in the browser. Any 0 where the CSS asks for more, or any heading or text touching the block or rule above, fails. The list is the evidence. | major |
@@ -239,8 +239,15 @@ check M1's smooth-scroll point and M10.
 | L4 | Personal data is handled openly | A privacy notice or link beside any form collecting personal data, and a privacy link in the footer. Terms and refund conditions on a page that takes payment. Do not claim the page is legally compliant; flag the gap. | source | major |
 | L5 | Forms resist spam | A honeypot hidden from assistive technology as well as visually, or a challenge such as Turnstile verified on the server. | source | minor (major once the form is live) |
 | L6 | Contact routes fit the audience | Phone, email or a messaging app where visitors expect them, beside or below the form. | source, brief | major for local services, minor otherwise |
-| L7 | The site has its edges | A custom 404 page, `robots.txt`, a sitemap. | source and visual: on the served build, request `/a-path-that-does-not-exist`, `/robots.txt` and `/sitemap.xml`, and note each status and what is shown. Check the build output for a 404 page. A server's default not-found page fails. | minor |
+| L7 | The site has its edges | A custom 404 page, `robots.txt`, a sitemap (the sitemap only once the domain is known; otherwise an open item). | source and visual: on the served build, request `/a-path-that-does-not-exist`, `/robots.txt` and `/sitemap.xml`, and note each status and what is shown. Check the build output for a 404 page. A server's default not-found page fails. | minor |
 | L8 | Open items are listed | Every missing asset (photos, screenshots, logo, favicon art) and every `[PLACEHOLDER: ...]` is listed as an open item with what is needed. The page does not launch until they are supplied. A missing asset that is unlabelled or unlisted is a finding. An asset the brief says was supplied but the page still shows as a placeholder is a finding too (A3). | source, visual, brief | major when unlisted or supplied |
+
+Review runs before `landing-skills:landing-launch`, so rows L3, L5 and L7 will
+often fail on a page launch has not touched yet. That is not circular: they are
+major or minor, which never fail the verdict, and they go to the next round or
+to launch. L1 is the exception that does fail it, when the form posts to the
+`/api/lead` placeholder: sending that blocker to launch is how the Worker
+gets built.
 
 ## What is not a finding
 

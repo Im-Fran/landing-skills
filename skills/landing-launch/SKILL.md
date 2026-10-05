@@ -83,7 +83,7 @@ Conversion
 - [ ] No promise of a confirmation email unless the user has a way to send one.
 
 Measurement
-- [ ] Web Analytics snippet with the real token on every page, including `/thanks/`, `/form-error/` and `404.html`.
+- [ ] Web Analytics snippet live with the real token on every page (pending: the snippet sits in an HTML comment until the token exists), including `/thanks/`, `/form-error/` and `404.html`.
 - [ ] The conversion is written to Analytics Engine, and a live test conversion shows up in the SQL query.
 - [ ] Web Analytics shows the live visit.
 - [ ] During an A/B test: visitor and conversion counts per variant appear, and the sample size and end rule are written in `landing/launch.md`.

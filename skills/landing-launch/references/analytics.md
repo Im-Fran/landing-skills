@@ -32,7 +32,7 @@ Setup is a dashboard step for the user: Web Analytics > Add a site > enter the h
 ></script>
 ```
 
-Until the user supplies the token, leave `$SITE_TOKEN` in place and mark the checklist item pending. Do not invent a token.
+Until the user supplies the token, write the snippet inside an HTML comment on every page, with `$SITE_TOKEN` in place, and mark the checklist item pending. A live snippet with a placeholder token loads a third-party script that fails with a CORS error on every visit. Do not invent a token. Once it arrives, remove the comment markers and put the token in.
 
 Use the manual snippet by default. Automatic injection exists for hostnames proxied through Cloudflare, but whether it works on a Workers static assets site is not documented. It also fails on responses with `Cache-Control: public, no-transform` and on DNS-only (CNAME) hostnames.
 
