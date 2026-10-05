@@ -275,7 +275,7 @@ New to this skill: `.bg-field`, `.is-live`.
 import * as THREE from 'three';
 import { reducedMotion, watchVisibility } from './motion-safety.js';
 
-export function mountParticles(host, { count = 4000, color = '#d9c9a8' } = {}) {
+export function mountParticles(host, { count = 4000, color = getComputedStyle(host).getPropertyValue('--color-on-bg').trim() || '#d9c9a8' } = {}) {
   const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: false });
   renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
   renderer.domElement.setAttribute('aria-hidden', 'true');

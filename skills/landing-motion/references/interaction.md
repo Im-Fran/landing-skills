@@ -433,6 +433,7 @@ the viewport. `data-rest` is the resting step.
 
 ```css
 .dial { inline-size: 12rem; aspect-ratio: 1; border-radius: 50%; touch-action: none; cursor: grab }
+.dial[data-drive="scroll"] { touch-action: pan-y } /* the page keeps scrolling under a finger on the dial */
 .dial:focus-visible { outline: 3px solid var(--color-ink); outline-offset: 4px }
 .dial-face {
   block-size: 100%; border-radius: 50%; border: 2px solid currentColor; position: relative;
