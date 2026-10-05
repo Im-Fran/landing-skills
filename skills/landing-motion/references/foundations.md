@@ -163,6 +163,7 @@ reduced-motion variant.
 | Count-up on a round, unsourced number | A count-up on an unsourced figure is a catalogued tell | Count only a real figure with a named source, final value in the HTML, or show it static |
 | Bounce easing | Catalogued tell | `--motion-ease-out`, or a spring with small overshoot on toggles |
 | Drop-in effect components (beams, shiny text, meteors, number tickers) with stock colours | Recognisable library defaults | Motion that shows the product working |
+| Pinned panel taller than a short screen | The last row is cut off and cannot be reached while pinned | Size the panel with `100svh`, check it at 360x640 and 1280x600, and keep its content inside that height; if it cannot fit, do not pin |
 | Scroll-jacking with no content reason | Takes the scroll away for decoration | Native scroll; pin only a sequence that needs it, with a short runway |
 | Tilt on every card | Uniform effect | Tilt one object that benefits from showing depth, or none |
 | Reveals that replay every time you scroll back | Motion repeats with no new information | Run entrances once (`unobserve` after the first intersection) |

@@ -527,8 +527,9 @@ Write the hero size for the real headline. Size follows length:
   60 characters and up) belongs at 42px or smaller on desktop, as on the
   well-made pages that set long sentences.
 - The test is the line count and the measure, checked at 1280 and 1440px in
-  the hero's real columns: the headline should set in about two to four
-  lines, at roughly 15 to 35 characters per line. More lines than that means
+  the hero's real columns: the headline should set in two to three
+  lines, at roughly 15 to 35 characters per line. A fourth line fails
+  `landing-skills:landing-review` row A6 at any width. More lines than that means
   the size is too large for the length; one line across the whole page means
   it can grow. These line and character counts are starting values from
   judgement, not measurements.
